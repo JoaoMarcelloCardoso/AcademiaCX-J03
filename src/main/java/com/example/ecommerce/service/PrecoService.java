@@ -1,11 +1,11 @@
 package com.example.ecommerce.service;
 
+import com.example.ecommerce.handler.exceptions.RecursoNaoEncontradoException;
 import com.example.ecommerce.model.PrecoModel;
 import com.example.ecommerce.repository.PrecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.ecommerce.handler.exceptions.ParametroInvalidoException;
-import com.example.ecommerce.handler.exceptions.RecursoNaoEncontradoExeception;
 import java.util.List;
 
 @Service
@@ -28,7 +28,7 @@ public class PrecoService {
         try {
             precoModel = precoRepository.findById(id).get();
         } catch (Exception e) {
-            throw new RecursoNaoEncontradoExeception("Id informado não encontrado");
+            throw new RecursoNaoEncontradoException("Id informado não encontrado");
         }
 
         return precoModel;

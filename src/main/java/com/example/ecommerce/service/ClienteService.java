@@ -1,7 +1,7 @@
 package com.example.ecommerce.service;
 
 import com.example.ecommerce.handler.exceptions.ParametroInvalidoException;
-import com.example.ecommerce.handler.exceptions.RecursoNaoEncontradoExeception;
+import com.example.ecommerce.handler.exceptions.RecursoNaoEncontradoException;
 import com.example.ecommerce.model.ClienteModel;
 import com.example.ecommerce.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class ClienteService {
         try {
             clienteModel = clienteRepository.findById(clienteModel.getId()).get();
         } catch (Exception e) {
-            throw new RecursoNaoEncontradoExeception("Id informado não encontrado");
+            throw new RecursoNaoEncontradoException("Id informado não encontrado");
         }
 
         return clienteModel;
