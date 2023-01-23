@@ -1,5 +1,7 @@
 package com.example.ecommerce.service;
 
+import com.example.ecommerce.handler.exceptions.ParametroInvalidoException;
+import com.example.ecommerce.handler.exceptions.RecursoNaoEncontradoExeception;
 import com.example.ecommerce.model.CarrinhoModel;
 import com.example.ecommerce.repository.CarrinhoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
