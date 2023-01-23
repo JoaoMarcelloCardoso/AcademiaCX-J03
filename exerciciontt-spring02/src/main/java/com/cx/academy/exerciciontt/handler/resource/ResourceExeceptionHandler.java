@@ -1,6 +1,6 @@
-package com.demo.academiacx.handler.resource;
+package com.cx.academy.exerciciontt.handler.resource;
 
-import com.demo.academiacx.handler.exceptions.*;
+import com.cx.academy.exerciciontt.handler.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +25,6 @@ public class ResourceExeceptionHandler {
 
     }
 
-    @ExceptionHandler(LimiteExcedidoException.class)
-    public ResponseEntity<DetalhesErro> handlerLimiteExcedidoException(LimiteExcedidoException e, HttpServletRequest request){
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new DetalhesErro(e.getMessage(), 460l, 406l, System.currentTimeMillis(), "http://localhost:8080/erros/406"));
-        }
 
     @ExceptionHandler(SemConteudoException.class)
     public ResponseEntity<DetalhesErro> handlerSemConteudoException(SemConteudoException e, HttpServletRequest request){
