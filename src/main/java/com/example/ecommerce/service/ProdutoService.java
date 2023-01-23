@@ -53,7 +53,7 @@ public class ProdutoService {
             produtoModel = produtoRepository.findById(id).get();
 
         } catch (Exception e) {
-            throw new RecursoNaoEncontradoExeception("Id informado não encontrado");
+            throw new RecursoNaoEncontradoException("Id informado não encontrado");
         }
 
         return produtoModel;
