@@ -1,8 +1,10 @@
 package com.demo.academiacx.service;
 
+import com.demo.academiacx.handler.exceptions.ErroInternoException;
 import com.demo.academiacx.handler.exceptions.ParametroInvalidoException;
 import com.demo.academiacx.handler.exceptions.RecursoNaoEncontradoException;
 import com.demo.academiacx.model.EnderecoModel;
+import com.demo.academiacx.model.PrecoModel;
 import com.demo.academiacx.repository.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,10 @@ import java.util.List;
 @Service
 public class EnderecoService {
     @Autowired
-    private EnderecoRepository EnderecoRepository;
+    private EnderecoRepository enderecoRepository;
 
     public List<EnderecoModel> findAll() {
-        List<EnderecoModel> EnderecoModels = EnderecoRepository.findAll();
+        List<EnderecoModel> EnderecoModels = enderecoRepository.findAll();
 
         return EnderecoModels;
     }
@@ -33,7 +35,7 @@ public class EnderecoService {
         }
 
         try {
-            EnderecoModel = EnderecoRepository.findById(EnderecoModel.getId()).get();
+            EnderecoModel = enderecoRepository.findById(EnderecoModel.getId()).get();
 
         } catch (Exception e) {
             throw new RecursoNaoEncontradoException("Id informado não encontrado");
@@ -51,7 +53,7 @@ public class EnderecoService {
 
         EnderecoModel EnderecoModel = new EnderecoModel();
         try {
-            EnderecoModel = EnderecoRepository.findById(id).get();
+            EnderecoModel = enderecoRepository.findById(id).get();
 
         } catch (Exception e) {
             throw new RecursoNaoEncontradoException("Id informado não encontrado");
@@ -63,7 +65,7 @@ public class EnderecoService {
     public EnderecoModel insert(EnderecoModel EnderecoModel) {
         EnderecoModel.setId(null);
 
-        EnderecoModel result = EnderecoRepository.save(EnderecoModel);
+        EnderecoModel result = enderecoRepository.save(EnderecoModel);
 
         return result;
     }
@@ -73,15 +75,20 @@ public class EnderecoService {
         findById(EnderecoModel);
 
 
-        return EnderecoRepository.save(EnderecoModel);
+        return enderecoRepository.save(EnderecoModel);
     }
 
     public boolean delete(Long id) {
 
-        findById(id);
-
-        EnderecoRepository.deleteById(id);
-
-        return true;
+        if (findById(id) != null) {
+            EnderecoModel enderecoModel = findById(id);
+            try {
+                enderecoRepository.delete(enderecoModel);
+            } catch (Exception e) {
+                throw new ErroInternoException("Erro interno ao deletar", e);
+            }
+            return true;
+        }
+        return false;
     }
 }

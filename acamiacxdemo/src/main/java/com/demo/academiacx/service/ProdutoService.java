@@ -1,5 +1,6 @@
 package com.demo.academiacx.service;
 
+import com.demo.academiacx.handler.exceptions.ErroInternoException;
 import com.demo.academiacx.handler.exceptions.ParametroInvalidoException;
 import com.demo.academiacx.handler.exceptions.RecursoNaoEncontradoException;
 import com.demo.academiacx.model.ProdutoModel;
@@ -11,10 +12,10 @@ import java.util.List;
 @Service
 public class ProdutoService {
     @Autowired
-    private ProdutoRepository ProdutoRepository;
+    private ProdutoRepository produtoRepository;
 
     public List<ProdutoModel> findAll() {
-        List<ProdutoModel> ProdutoModels = ProdutoRepository.findAll();
+        List<ProdutoModel> ProdutoModels = produtoRepository.findAll();
 
         return ProdutoModels;
     }
@@ -32,7 +33,7 @@ public class ProdutoService {
         }
 
         try {
-            ProdutoModel = ProdutoRepository.findById(ProdutoModel.getId()).get();
+            ProdutoModel = produtoRepository.findById(ProdutoModel.getId()).get();
 
         } catch (Exception e) {
             throw new RecursoNaoEncontradoException("Id informado não encontrado");
@@ -50,7 +51,7 @@ public class ProdutoService {
 
         ProdutoModel ProdutoModel = new ProdutoModel();
         try {
-            ProdutoModel = ProdutoRepository.findById(id).get();
+            ProdutoModel = produtoRepository.findById(id).get();
 
         } catch (Exception e) {
             throw new RecursoNaoEncontradoException("Id informado não encontrado");
@@ -62,7 +63,7 @@ public class ProdutoService {
     public ProdutoModel insert(ProdutoModel ProdutoModel) {
         ProdutoModel.setId(null);
 
-        ProdutoModel result = ProdutoRepository.save(ProdutoModel);
+        ProdutoModel result = produtoRepository.save(ProdutoModel);
 
         return result;
     }
@@ -72,15 +73,21 @@ public class ProdutoService {
         findById(ProdutoModel);
 
 
-        return ProdutoRepository.save(ProdutoModel);
+        return produtoRepository.save(ProdutoModel);
     }
 
     public boolean delete(Long id) {
 
-        findById(id);
+        if (findById(id) != null) {
+            ProdutoModel produtoModel = findById(id);
+            try {
+                produtoRepository.delete(produtoModel);
+            } catch (Exception e) {
+                throw new ErroInternoException("Erro interno ao deletar", e);
+            }
 
-        ProdutoRepository.deleteById(id);
-
-        return true;
+            return true;
+        }
+        return false;
     }
 }

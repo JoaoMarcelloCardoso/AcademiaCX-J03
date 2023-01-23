@@ -1,8 +1,10 @@
 package com.demo.academiacx.service;
 
+import com.demo.academiacx.handler.exceptions.ErroInternoException;
 import com.demo.academiacx.handler.exceptions.ParametroInvalidoException;
 import com.demo.academiacx.handler.exceptions.RecursoNaoEncontradoException;
 import com.demo.academiacx.model.ClienteModel;
+import com.demo.academiacx.model.EnderecoModel;
 import com.demo.academiacx.repository.ClienteRepostory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,10 @@ import java.util.List;
 @Service
 public class ClienteService {
     @Autowired
-    private ClienteRepostory ClienteRepository;
+    private ClienteRepostory clienteRepository;
 
     public List<ClienteModel> findAll() {
-        List<ClienteModel> ClienteModels = ClienteRepository.findAll();
+        List<ClienteModel> ClienteModels = clienteRepository.findAll();
 
         return ClienteModels;
     }
@@ -32,7 +34,7 @@ public class ClienteService {
         }
 
         try {
-            ClienteModel = ClienteRepository.findById(ClienteModel.getId()).get();
+            ClienteModel = clienteRepository.findById(ClienteModel.getId()).get();
 
         } catch (Exception e) {
             throw new RecursoNaoEncontradoException("Id informado não encontrado");
@@ -50,7 +52,7 @@ public class ClienteService {
 
         ClienteModel ClienteModel = new ClienteModel();
         try {
-            ClienteModel = ClienteRepository.findById(id).get();
+            ClienteModel = clienteRepository.findById(id).get();
 
         } catch (Exception e) {
             throw new RecursoNaoEncontradoException("Id informado não encontrado");
@@ -62,7 +64,7 @@ public class ClienteService {
     public ClienteModel insert(ClienteModel ClienteModel) {
         ClienteModel.setId(null);
 
-        ClienteModel result = ClienteRepository.save(ClienteModel);
+        ClienteModel result = clienteRepository.save(ClienteModel);
 
         return result;
     }
@@ -72,15 +74,20 @@ public class ClienteService {
         findById(ClienteModel);
 
 
-        return ClienteRepository.save(ClienteModel);
+        return clienteRepository.save(ClienteModel);
     }
 
     public boolean delete(Long id) {
 
-        findById(id);
-
-        ClienteRepository.deleteById(id);
-
-        return true;
+        if (findById(id) != null) {
+            ClienteModel clienteModel = findById(id);
+            try {
+                clienteRepository.delete(clienteModel);
+            } catch (Exception e) {
+                throw new ErroInternoException("Erro interno ao deletar", e);
+            }
+            return true;
+        }
+        return false;
     }
 }

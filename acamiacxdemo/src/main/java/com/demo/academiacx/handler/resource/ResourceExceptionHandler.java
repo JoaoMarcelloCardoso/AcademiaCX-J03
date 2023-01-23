@@ -18,12 +18,12 @@ public class ResourceExceptionHandler {
     public ResponseEntity<DetalhesErro> handlerParametroInvalidoException(ParametroInvalidoException e, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new DetalhesErro(e.getMessage(), 406l, 406l, System.currentTimeMillis(), "http://localhost:8080/erros/406"));
     }
-    @ExceptionHandler(MetodoNaoPermitidoException.class)
-    public ResponseEntity<DetalhesErro> handlerMetodoNaoPermitidoException(MetodoNaoPermitidoException e, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new DetalhesErro(e.getMessage(), 405l, 405l, System.currentTimeMillis(), "http://localhost:8080/erros/405"));
+    @ExceptionHandler(RecursoIncorretoException.class)
+    public ResponseEntity<DetalhesErro> handlerRequisicaoIncorretaException(RecursoIncorretoException e, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new DetalhesErro(e.getMessage(), 400l, 400l, System.currentTimeMillis(), "http://localhost:8080/erros/400"));
     }
     @ExceptionHandler(ErroInternoException.class)
     public ResponseEntity<DetalhesErro> handlerErroInternoException(ErroInternoException e, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new DetalhesErro(e.getMessage(), 500l, 500l, System.currentTimeMillis(), "http://localhost:8080/erros/500"));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new DetalhesErro(e.getMessage(), 500l, 500l, System.currentTimeMillis(), "http://localhost:8080/erros/500"));
     }
 }

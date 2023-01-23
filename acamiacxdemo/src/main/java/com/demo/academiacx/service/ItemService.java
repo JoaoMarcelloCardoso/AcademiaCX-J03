@@ -1,8 +1,10 @@
 package com.demo.academiacx.service;
 
+import com.demo.academiacx.handler.exceptions.ErroInternoException;
 import com.demo.academiacx.handler.exceptions.ParametroInvalidoException;
 import com.demo.academiacx.handler.exceptions.RecursoNaoEncontradoException;
 import com.demo.academiacx.model.ItemModel;
+import com.demo.academiacx.model.PrecoModel;
 import com.demo.academiacx.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,10 @@ import java.util.List;
 @Service
 public class ItemService {
     @Autowired
-    private ItemRepository ItemRepository;
+    private ItemRepository itemRepository;
 
     public List<ItemModel> findAll() {
-        List<ItemModel> ItemModels = ItemRepository.findAll();
+        List<ItemModel> ItemModels = itemRepository.findAll();
 
         return ItemModels;
     }
@@ -33,7 +35,7 @@ public class ItemService {
         }
 
         try {
-            ItemModel = ItemRepository.findById(ItemModel.getId()).get();
+            ItemModel = itemRepository.findById(ItemModel.getId()).get();
 
         } catch (Exception e) {
             throw new RecursoNaoEncontradoException("Id informado não encontrado");
@@ -51,7 +53,7 @@ public class ItemService {
 
         ItemModel ItemModel = new ItemModel();
         try {
-            ItemModel = ItemRepository.findById(id).get();
+            ItemModel = itemRepository.findById(id).get();
 
         } catch (Exception e) {
             throw new RecursoNaoEncontradoException("Id informado não encontrado");
@@ -63,7 +65,7 @@ public class ItemService {
     public ItemModel insert(ItemModel ItemModel) {
         ItemModel.setId(null);
 
-        ItemModel result = ItemRepository.save(ItemModel);
+        ItemModel result = itemRepository.save(ItemModel);
 
         return result;
     }
@@ -73,15 +75,21 @@ public class ItemService {
         findById(ItemModel);
 
 
-        return ItemRepository.save(ItemModel);
+        return itemRepository.save(ItemModel);
     }
 
     public boolean delete(Long id) {
 
-        findById(id);
+        if (findById(id) != null) {
+            ItemModel itemModel = findById(id);
+            try {
+                itemRepository.delete(itemModel);
+            } catch (Exception e) {
+                throw new ErroInternoException("Erro interno ao deletar", e);
+            }
 
-        ItemRepository.deleteById(id);
-
-        return true;
+            return true;
+        }
+        return false;
     }
 }
