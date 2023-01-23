@@ -1,7 +1,7 @@
-package com.demo.academiacx.controller;
+package com.cx.academy.exerciciontt.controller;
 
-import com.demo.academiacx.model.UserModel;
-import com.demo.academiacx.service.UserService;
+import com.cx.academy.exerciciontt.model.AddressModel;
+import com.cx.academy.exerciciontt.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/user")
-public class UserController {
+@RequestMapping(value = "/address")
+public class AddressController {
     @Autowired
-    private UserService userService;
+    private AddressService addressService;
 
     @GetMapping
     public ResponseEntity<?> findAll() {
 
-        List<UserModel> response = userService.findAll();
+        List<AddressModel> response = addressService.findAll();
 
         return response == null ? ResponseEntity.unprocessableEntity().build() : ResponseEntity.ok(response);
     }
@@ -25,35 +25,32 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
 
-        UserModel response = userService.findById(id);
+        AddressModel response = addressService.findById(id);
 
         return response == null? ResponseEntity.notFound().build() : ResponseEntity.ok(response);
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> insert(@RequestBody UserModel userModel) {
+    public ResponseEntity<?> insert(@RequestBody AddressModel addressModel) {
 
-        UserModel response = userService.insert(userModel);
+        AddressModel response = addressService.insert(addressModel);
 
         return response == null? ResponseEntity.badRequest().build(): ResponseEntity.ok(response) ;
     }
 
-
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody UserModel userModel) {
+    public ResponseEntity<?> update(@RequestBody AddressModel addressModel) {
 
-        UserModel response = userService.update(userModel);
+        AddressModel response = addressService.update(addressModel);
 
         return response == null? ResponseEntity.badRequest().build() : ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteById(@RequestParam(value = "id", required = false) Long id) {
+    public ResponseEntity<?> deleteById(@RequestParam(value = "id", required = false) long id) {
 
-        boolean success = userService.delete(id);
+        boolean success = addressService.delete(id);
 
         return success? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
-
-
 }
