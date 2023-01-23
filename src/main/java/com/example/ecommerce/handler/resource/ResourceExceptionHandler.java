@@ -3,7 +3,6 @@ package com.example.ecommerce.handler.resource;
 import com.example.ecommerce.handler.exceptions.DetalhesErro;
 import com.example.ecommerce.handler.exceptions.ParametroInvalidoException;
 import com.example.ecommerce.handler.exceptions.RecursoNaoEncontradoException;
-import com.example.ecommerce.handler.exceptions.RecursoNaoEncontradoExeception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
