@@ -1,0 +1,7 @@
+com\example\ecommerce\EcommerceApplication.class
+com\example\ecommerce\model\ClienteModel.class
+com\example\ecommerce\model\CarrinhoModel.class
+com\example\ecommerce\model\PrecoModel.class
+com\example\ecommerce\model\ItemModel.class
+com\example\ecommerce\model\EnderecoModel.class
+com\example\ecommerce\model\ProdutoModel.class
