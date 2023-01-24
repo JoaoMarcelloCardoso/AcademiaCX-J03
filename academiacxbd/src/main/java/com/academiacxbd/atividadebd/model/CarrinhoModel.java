@@ -1,7 +1,11 @@
 package com.academiacxbd.atividadebd.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +15,12 @@ public class CarrinhoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Nonnull
+    @NotBlank
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private LocalDateTime dataHora;
+    @NotBlank
     private Double total;
     @ManyToOne
     @JoinColumn(name = "cliente_id")

@@ -38,6 +38,8 @@ public class CarrinhoService {
 
         } catch (Exception e) {
             throw new RecursoNaoEncontradoException("Id informado não encontrado");
+
+
         }
 
         return carrinhoModel;
